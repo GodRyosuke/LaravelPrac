@@ -8,7 +8,7 @@ class Authors extends Model
 {
     protected $table = 'authors';
 
-    protected $flllable = [
+    protected $fillable = [
         'name',
         'kana',
     ];

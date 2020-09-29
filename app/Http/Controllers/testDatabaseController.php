@@ -14,9 +14,7 @@ class testDatabaseController extends Controller
 
     public function process(Request $request) 
     {
-        Authors::create([
-            'name' => '田中',
-            'kana' => 'タナカ'
-        ]);
+        Authors::create($request->all());
+        return redirect('/data');
     }
 }
