@@ -1,0 +1,19 @@
+body {
+    color: black;
+}
+h1, h2, h3, h4, h5 {
+    margin: 0;
+}
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+main .mainCon {
+    max-width: 800px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+main h1 {
+    font-size: 20px;
+    text-align: center;
+}
