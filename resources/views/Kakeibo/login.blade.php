@@ -8,7 +8,7 @@
 </head>
 <body>
     <p>
-        これは家計簿ログインページです。
+        家計簿にログインする
     </p>
 
     <div class="container">
