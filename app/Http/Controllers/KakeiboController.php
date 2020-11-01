@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Kakeibo;
 use App\MonthDate;
+use App\Rules\cantlogin;
 use App\KakeiboAuth;
+use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
 
 class KakeiboController extends Controller
 {
@@ -109,15 +113,38 @@ class KakeiboController extends Controller
     }
 
     public function register(Request $request) {
-        KakeiboAuth::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
-        // session(['username' => $request->name]);
-        $request->session()->put('username', $request->name);
+        $messages = [
+            'required' => 'このフィールドは必須入力です',
+            'alpha_num' => '記号文字は使用できません'
+        ];
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|alpha_num',
+            'email' =>'required',
+            'password' => 'required',
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect(route('welcome'))
+                ->withErrors($validator)
+                ->withInput($request->all());
+        }
         
-        return redirect('/kakeibo');
+        $userAddress = $request->email;
+        Mail::send('Kakeibo.emailContent', [], function($message) use ($userAddress) {
+            $message->to($userAddress, 'Test')
+                ->from('webkanesex@gmail.com', 'Reffect')
+                ->subject('This is the subject of Oregairu');
+        });
+
+        return redirect('/');
+
+        // KakeiboAuth::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => $request->password
+        // ]);
+        // $request->session()->put('username', $request->name);
+        
+        // return redirect('/kakeibo');
     }
 
     public function login(Request $request) {
@@ -126,9 +153,18 @@ class KakeiboController extends Controller
         if (!isset($users)) {
             $errorflg = 1;
         } 
+        $messages = [
+            'required' => 'このフィールドは必須入力です',
+            'cantlogin' => 'ログインできませんでした(名前、パスワードが正確か確認してください)'
+        ];
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', new cantlogin],
+            'password' => ['required', new cantlogin],
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect(route('showLogin'))->withErrors($validator)->withInput($request->all());
+        }
 
-        // return view ('Kakeibo.test', compact('request'));
-        
         if ($errorflg == 1) {
             return view('Kakeibo.login', compact('errorflg'));
         } else {

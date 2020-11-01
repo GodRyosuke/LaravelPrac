@@ -13,11 +13,11 @@
 
 // welcome 画面
 Route::get('/', function () {
-    return view('kakeibo.welcome');
+    return view('Kakeibo.welcome');
 })->name('welcome');
 Route::post('/welcome', 'KakeiboController@register')->name('kRegister');
 // ログイン画面
-Route::get('/login', function() { return view ('kakeibo.login');})->name('showLogin');
+Route::get('/login', function() { return view ('Kakeibo.login');})->name('showLogin');
 Route::post('/login', 'KakeiboController@login')->name('login');
 // Route::get('auth/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('kakeibo/logout', 'KakeiboController@logout')->name('kLogout');

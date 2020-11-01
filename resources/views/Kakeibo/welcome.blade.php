@@ -17,15 +17,38 @@
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name">名前</label>
-                    <input type="text" class="form-control" id="name" name="name">
+                    <input type="text" class="form-control <?php if($errors->has('name')){ echo 'is-invalid'; } ?>" id="name" name="name" value="{{ old('name') }}">
+                    @if ($errors->has('name'))
+                    <div class="alert alert-danger">
+                    <?php foreach($errors->get('name') as $error): ?>
+                        <?php echo $error; ?>
+                    <?php endforeach; ?>
+                    </div>
+                    @endif
                 </div>
                 <div class="form-group">
                     <label for="email">メールアドレス</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email address">
+                    <input type="text" class="form-control <?php if($errors->has('email')){ echo 'is-invalid'; } ?>" id="email" name="email" placeholder="Enter your email address" value="{{ old('email') }}">
+                    <?php
+                    if ($errors->has('email')):
+                    ?>
+                    <div class="alert alert-danger">
+                    <?php foreach($errors->get('email') as $error): ?>
+                        <?php echo $error; ?>
+                    <?php endforeach; ?>
+                    </div>
+                    <?php endif ?>
                 </div>
                 <div class="form-group">
                     <label for="password">パスワード</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control <?php if($errors->has('password')){ echo 'is-invalid'; } ?>" id="password" name="password" value="{{ old('password') }}">
+                    @if ($errors->has('password'))
+                    <div class="alert alert-danger">
+                    <?php foreach($errors->get('password') as $error): ?>
+                        <?php echo $error; ?>
+                    <?php endforeach; ?>
+                    </div>
+                    @endif
                 </div>
                 <button class="btn btn-danger" type="submit" name="action" value="send">送信</button>
             </form>
